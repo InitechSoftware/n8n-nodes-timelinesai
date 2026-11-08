@@ -31,8 +31,7 @@ export class TimelinesAiApi implements ICredentialType {
 			name: 'baseUrl',
 			type: 'string',
 			default: 'https://app.timelines.ai/integrations/api',
-			description:
-				'Change only to test against a non-production TimelinesAI environment',
+			description: 'TimelinesAI Public API address. Keep the default.',
 		},
 	];
 
