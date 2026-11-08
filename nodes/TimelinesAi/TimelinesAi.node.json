@@ -1,0 +1,18 @@
+{
+	"node": "@timelinesai/n8n-nodes-timelinesai.timelinesAi",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Communication"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://github.com/timelinesai/n8n-nodes-timelinesai?tab=readme-ov-file#credentials"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/timelinesai/n8n-nodes-timelinesai?tab=readme-ov-file"
+			}
+		]
+	}
+}

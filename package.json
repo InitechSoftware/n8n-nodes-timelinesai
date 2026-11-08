@@ -1,0 +1,56 @@
+{
+  "name": "@timelinesai/n8n-nodes-timelinesai",
+  "version": "0.1.0",
+  "description": "n8n nodes for TimelinesAI: WhatsApp shared inbox (QR-linked numbers) and WhatsApp Business Platform (WABA) via the TimelinesAI Public API",
+  "license": "MIT",
+  "homepage": "https://github.com/timelinesai/n8n-nodes-timelinesai#readme",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "timelinesai",
+    "whatsapp",
+    "waba",
+    "whatsapp-business"
+  ],
+  "author": {
+    "name": "TimelinesAI",
+    "email": "hello@timelines.ai",
+    "url": "https://timelines.ai"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timelinesai/n8n-nodes-timelinesai.git"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/TimelinesAiApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/TimelinesAi/TimelinesAi.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "*",
+    "eslint": "9.32.0",
+    "prettier": "3.6.2",
+    "release-it": "^21.1.0",
+    "typescript": "5.9.2"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
