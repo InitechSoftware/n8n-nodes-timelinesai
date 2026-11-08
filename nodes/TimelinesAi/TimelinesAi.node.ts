@@ -5,6 +5,8 @@ import { chatNoteDescription } from './resources/chatNote';
 import { fileDescription } from './resources/file';
 import { messageDescription } from './resources/message';
 import { messageReactionDescription } from './resources/messageReaction';
+import { whatsappAccountDescription } from './resources/whatsappAccount';
+import { workspaceDescription } from './resources/workspace';
 import { getChats } from './listSearch/getChats';
 import { getWhatsAppAccounts } from './listSearch/getWhatsAppAccounts';
 
@@ -67,6 +69,14 @@ export class TimelinesAi implements INodeType {
 						name: 'Message Reaction',
 						value: 'messageReaction',
 					},
+					{
+						name: 'WhatsApp Account',
+						value: 'whatsappAccount',
+					},
+					{
+						name: 'Workspace',
+						value: 'workspace',
+					},
 				],
 				default: 'chat',
 			},
@@ -76,6 +86,8 @@ export class TimelinesAi implements INodeType {
 			...fileDescription,
 			...messageDescription,
 			...messageReactionDescription,
+			...whatsappAccountDescription,
+			...workspaceDescription,
 		],
 	};
 
