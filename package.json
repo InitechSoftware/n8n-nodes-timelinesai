@@ -40,7 +40,8 @@
       "dist/credentials/TimelinesAiApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/TimelinesAi/TimelinesAi.node.js"
+      "dist/nodes/TimelinesAi/TimelinesAi.node.js",
+      "dist/nodes/TimelinesAiTrigger/TimelinesAiTrigger.node.js"
     ]
   },
   "devDependencies": {
