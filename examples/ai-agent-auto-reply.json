@@ -1,0 +1,102 @@
+{
+  "name": "TimelinesAI: AI Agent auto-reply to incoming WhatsApp messages",
+  "nodes": [
+    {
+      "parameters": {
+        "events": ["message:received:new"],
+        "filters": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "TimelinesAI Trigger",
+      "type": "@timelinesai/n8n-nodes-timelinesai.timelinesAiTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "webhookId": "a1b2c3d4-0001-4000-8000-0000000000aa",
+      "credentials": {
+        "timelinesAiApi": { "id": "", "name": "TimelinesAI account" }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "You answer WhatsApp messages for our team. Keep replies short and friendly. Use the chat history tool to read the last messages of this chat before answering. If you cannot help, say a teammate will reply soon."
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000002",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [260, 0]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000003",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [180, 220],
+      "credentials": {
+        "openAiApi": { "id": "", "name": "OpenAI account" }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get the most recent messages of the current WhatsApp chat, newest first.",
+        "resource": "message",
+        "operation": "getAll",
+        "chat": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('TimelinesAI Trigger').item.json.chat.chat_id }}"
+        },
+        "returnAll": false,
+        "limit": 10,
+        "filters": {},
+        "simplify": true
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000004",
+      "name": "Chat history",
+      "type": "@timelinesai/n8n-nodes-timelinesai.timelinesAiTool",
+      "typeVersion": 1,
+      "position": [380, 220],
+      "credentials": {
+        "timelinesAiApi": { "id": "", "name": "TimelinesAI account" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendToChat",
+        "chat": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $('TimelinesAI Trigger').item.json.chat.chat_id }}"
+        },
+        "text": "={{ $json.output }}",
+        "replyTo": "={{ $('TimelinesAI Trigger').item.json.message.message_uid }}",
+        "additionalFields": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000005",
+      "name": "Reply in chat",
+      "type": "@timelinesai/n8n-nodes-timelinesai.timelinesAi",
+      "typeVersion": 1,
+      "position": [560, 0],
+      "credentials": {
+        "timelinesAiApi": { "id": "", "name": "TimelinesAI account" }
+      }
+    }
+  ],
+  "connections": {
+    "TimelinesAI Trigger": { "main": [[{ "node": "AI Agent", "type": "main", "index": 0 }]] },
+    "OpenAI Chat Model": { "ai_languageModel": [[{ "node": "AI Agent", "type": "ai_languageModel", "index": 0 }]] },
+    "Chat history": { "ai_tool": [[{ "node": "AI Agent", "type": "ai_tool", "index": 0 }]] },
+    "AI Agent": { "main": [[{ "node": "Reply in chat", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": { "templateCredsSetupCompleted": false }
+}

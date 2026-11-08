@@ -1,0 +1,53 @@
+{
+  "name": "TimelinesAI: send a WABA template to new form leads",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Get in touch",
+        "formDescription": "Leave your WhatsApp number and we will message you.",
+        "formFields": {
+          "values": [
+            { "fieldLabel": "Name", "requiredField": true },
+            { "fieldLabel": "WhatsApp number", "placeholder": "+14155550123", "requiredField": true }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b1b2c3d4-0002-4000-8000-000000000001",
+      "name": "Lead form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [0, 0],
+      "webhookId": "b1b2c3d4-0002-4000-8000-0000000000aa"
+    },
+    {
+      "parameters": {
+        "resource": "wabaMessage",
+        "operation": "sendToPhone",
+        "wabaAccount": { "__rl": true, "mode": "list", "value": "" },
+        "phone": "={{ $json['WhatsApp number'] }}",
+        "messageType": "template",
+        "template": { "__rl": true, "mode": "list", "value": "" },
+        "headerVariables": {},
+        "bodyVariables": {
+          "variables": [{ "value": "={{ $json.Name }}" }]
+        },
+        "simplify": true
+      },
+      "id": "b1b2c3d4-0002-4000-8000-000000000002",
+      "name": "Send welcome template",
+      "type": "@timelinesai/n8n-nodes-timelinesai.timelinesAi",
+      "typeVersion": 1,
+      "position": [260, 0],
+      "credentials": {
+        "timelinesAiApi": { "id": "", "name": "TimelinesAI account" }
+      },
+      "notes": "Pick your WABA account and an approved template with one body variable ({{1}} = the lead's name)."
+    }
+  ],
+  "connections": {
+    "Lead form": { "main": [[{ "node": "Send welcome template", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": { "templateCredsSetupCompleted": false }
+}

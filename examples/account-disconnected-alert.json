@@ -1,0 +1,41 @@
+{
+  "name": "TimelinesAI: Slack alert when a WhatsApp account disconnects",
+  "nodes": [
+    {
+      "parameters": {
+        "events": ["whatsapp:account:disconnected", "whatsapp:account:suspended"],
+        "filters": {}
+      },
+      "id": "d1b2c3d4-0004-4000-8000-000000000001",
+      "name": "TimelinesAI Trigger",
+      "type": "@timelinesai/n8n-nodes-timelinesai.timelinesAiTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "webhookId": "d1b2c3d4-0004-4000-8000-0000000000aa",
+      "credentials": {
+        "timelinesAiApi": { "id": "", "name": "TimelinesAI account" }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": { "__rl": true, "mode": "name", "value": "#alerts" },
+        "text": "={{ $json.event_type === 'whatsapp:account:suspended' ? ':warning: Message sync suspended' : ':red_circle: WhatsApp account disconnected' }} for {{ $json.whatsapp_account.account_name ?? '' }} ({{ $json.whatsapp_account.phone }}). Reconnect it in TimelinesAI.",
+        "otherOptions": {}
+      },
+      "id": "d1b2c3d4-0004-4000-8000-000000000002",
+      "name": "Alert in Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [260, 0],
+      "credentials": {
+        "slackApi": { "id": "", "name": "Slack account" }
+      }
+    }
+  ],
+  "connections": {
+    "TimelinesAI Trigger": { "main": [[{ "node": "Alert in Slack", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": { "templateCredsSetupCompleted": false }
+}

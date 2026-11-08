@@ -1,0 +1,60 @@
+{
+  "name": "TimelinesAI: log closed WABA chats to Google Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "events": ["waba:chat:closed"],
+        "filters": {}
+      },
+      "id": "c1b2c3d4-0003-4000-8000-000000000001",
+      "name": "TimelinesAI Trigger",
+      "type": "@timelinesai/n8n-nodes-timelinesai.timelinesAiTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "webhookId": "c1b2c3d4-0003-4000-8000-0000000000aa",
+      "credentials": {
+        "timelinesAiApi": { "id": "", "name": "TimelinesAI account" }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "mode": "list", "value": "" },
+        "sheetName": { "__rl": true, "mode": "list", "value": "" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Closed at": "={{ $now.toISO() }}",
+            "Chat ID": "={{ $json.chat?.chat_id ?? $json.chat?.id ?? '' }}",
+            "Contact": "={{ $json.chat?.full_name ?? $json.chat?.name ?? '' }}",
+            "Phone": "={{ $json.chat?.phone ?? '' }}",
+            "Responsible": "={{ $json.chat?.responsible_email ?? '' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            { "id": "Closed at", "displayName": "Closed at", "type": "string", "display": true, "required": false },
+            { "id": "Chat ID", "displayName": "Chat ID", "type": "string", "display": true, "required": false },
+            { "id": "Contact", "displayName": "Contact", "type": "string", "display": true, "required": false },
+            { "id": "Phone", "displayName": "Phone", "type": "string", "display": true, "required": false },
+            { "id": "Responsible", "displayName": "Responsible", "type": "string", "display": true, "required": false }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c1b2c3d4-0003-4000-8000-000000000002",
+      "name": "Append to sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [260, 0],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "", "name": "Google Sheets account" }
+      },
+      "notes": "Create a sheet with the columns Closed at, Chat ID, Contact, Phone, Responsible."
+    }
+  ],
+  "connections": {
+    "TimelinesAI Trigger": { "main": [[{ "node": "Append to sheet", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": { "templateCredsSetupCompleted": false }
+}
