@@ -8,7 +8,7 @@ First version of the TimelinesAI nodes for n8n.
 
 ### Added
 
-- **TimelinesAI API credential**: Public API token, an editable base URL for non-production environments, and a credential test.
+- **TimelinesAI API credential**: Public API token and base URL, checked against the workspace when saved.
 - **TimelinesAI node**, covering the TimelinesAI Public API:
   - WhatsApp (QR-linked numbers): Chat, Chat Label, Chat Note, Message (send to chat, phone or JID, and voice notes), Message Reaction, File, WhatsApp Account and Workspace.
   - WhatsApp Business Platform: WABA Chat, WABA Chat Label, WABA Message (text, file or template), WABA Message Reaction, WABA Account (including analytics) and WABA Template.

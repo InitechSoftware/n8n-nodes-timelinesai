@@ -40,9 +40,9 @@ The nodes use a **TimelinesAI API** credential with a workspace Public API token
 1. Sign in to [app.timelines.ai](https://app.timelines.ai).
 2. Go to **Integrations → Public API** and copy the token.
 3. In n8n, create a **TimelinesAI API** credential and paste the token into **API Token**.
-4. Leave **Base URL** as `https://app.timelines.ai/integrations/api`. Change it only to test against a non-production TimelinesAI environment.
+4. Keep the default **Base URL**, `https://app.timelines.ai/integrations/api`.
 
-**Test** checks the token against `GET /workspace`.
+When you save the credential, n8n checks the token with your TimelinesAI workspace.
 
 > **Regenerating the token breaks every credential that uses it.** The token belongs to the workspace. If anyone regenerates it in TimelinesAI, every n8n credential holding the old token fails with "TimelinesAI rejected the API token". Paste the new token to fix it.
 
@@ -134,7 +134,7 @@ Import these from [`examples/`](examples/) (**Workflow menu → Import from File
 
 ## Compatibility
 
-- Developed and tested with **n8n 2.46**.
+- Built for **n8n 2.x** (developed against n8n 2.46).
 - Uses n8n's community node API version 1.
 - No runtime dependencies.
 
