@@ -2,6 +2,7 @@ import { NodeConnectionTypes, type INodeType, type INodeTypeDescription } from '
 import { chatDescription } from './resources/chat';
 import { chatLabelDescription } from './resources/chatLabel';
 import { chatNoteDescription } from './resources/chatNote';
+import { fileDescription } from './resources/file';
 import { messageDescription } from './resources/message';
 import { messageReactionDescription } from './resources/messageReaction';
 import { getChats } from './listSearch/getChats';
@@ -55,6 +56,10 @@ export class TimelinesAi implements INodeType {
 						value: 'chatNote',
 					},
 					{
+						name: 'File',
+						value: 'file',
+					},
+					{
 						name: 'Message',
 						value: 'message',
 					},
@@ -68,6 +73,7 @@ export class TimelinesAi implements INodeType {
 			...chatDescription,
 			...chatLabelDescription,
 			...chatNoteDescription,
+			...fileDescription,
 			...messageDescription,
 			...messageReactionDescription,
 		],

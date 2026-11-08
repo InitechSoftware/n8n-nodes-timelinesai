@@ -1,4 +1,5 @@
-import type { INodeProperties } from 'n8n-workflow';
+import type { IExecuteSingleFunctions, IHttpRequestOptions, INodeProperties } from 'n8n-workflow';
+import { applyMultipart, buildMultipart, readInputFile } from '../../shared/multipart';
 import {
 	CHAT_ID,
 	chatSelect,
@@ -9,6 +10,19 @@ import { paginateByPage } from '../../shared/pagination';
 import { requireTextOrAttachment, simplifyMessages } from '../../shared/utils';
 
 const forMessages = { resource: ['message'] };
+
+async function sendVoiceAsMultipart(
+	this: IExecuteSingleFunctions,
+	requestOptions: IHttpRequestOptions,
+): Promise<IHttpRequestOptions> {
+	const file = await readInputFile.call(this);
+	return applyMultipart(
+		requestOptions,
+		buildMultipart([
+			{ name: 'file', filename: file.filename, contentType: file.contentType, data: file.data },
+		]),
+	);
+}
 const SEND_OPERATIONS = ['sendToChat', 'sendToPhone', 'sendToJid'];
 const sendOutput = {
 	postReceive: [{ type: 'rootProperty' as const, properties: { property: 'data' } }],
@@ -80,6 +94,17 @@ export const messageDescription: INodeProperties[] = [
 				},
 			},
 			{
+				name: 'Send Voice Message',
+				value: 'sendVoice',
+				action: 'Send a voice message to a chat',
+				description: 'Send an audio file as a WhatsApp voice note into an existing chat',
+				routing: {
+					request: { method: 'POST', url: `=/chats/${CHAT_ID}/voice_message` },
+					send: { preSend: [sendVoiceAsMultipart] },
+					output: sendOutput,
+				},
+			},
+			{
 				name: 'Send to Phone',
 				value: 'sendToPhone',
 				action: 'Send a message to a phone number',
@@ -97,7 +122,49 @@ export const messageDescription: INodeProperties[] = [
 	// ----- Target -----
 	{
 		...chatSelect,
-		displayOptions: { show: { ...forMessages, operation: ['sendToChat', 'getAll'] } },
+		displayOptions: { show: { ...forMessages, operation: ['sendToChat', 'sendVoice', 'getAll'] } },
+	},
+
+	// ----- Voice message -----
+	{
+		displayName: 'Input Type',
+		name: 'inputType',
+		type: 'options',
+		options: [
+			{
+				name: 'Binary Data',
+				value: 'binaryData',
+				description: 'Use an audio file from the binary data of an earlier node',
+			},
+			{
+				name: 'URL',
+				value: 'url',
+				description: 'Download the audio file from a public URL',
+			},
+		],
+		default: 'binaryData',
+		displayOptions: { show: { ...forMessages, operation: ['sendVoice'] } },
+	},
+	{
+		displayName: 'Input Binary Field',
+		name: 'binaryPropertyName',
+		type: 'string',
+		default: 'data',
+		required: true,
+		hint: 'The name of the input binary field containing the audio file (OGG or OGA)',
+		displayOptions: {
+			show: { ...forMessages, operation: ['sendVoice'], inputType: ['binaryData'] },
+		},
+	},
+	{
+		displayName: 'Audio URL',
+		name: 'fileUrl',
+		type: 'string',
+		default: '',
+		required: true,
+		placeholder: 'e.g. https://example.com/greeting.ogg',
+		description: 'Publicly accessible URL of an OGG or OGA audio file',
+		displayOptions: { show: { ...forMessages, operation: ['sendVoice'], inputType: ['url'] } },
 	},
 	{
 		displayName: 'Phone',
