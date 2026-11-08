@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "n8n nodes for TimelinesAI: WhatsApp shared inbox (QR-linked numbers) and WhatsApp Business Platform (WABA) via the TimelinesAI Public API",
   "license": "MIT",
-  "homepage": "https://github.com/timelinesai/n8n-nodes-timelinesai#readme",
+  "homepage": "https://github.com/InitechSoftware/n8n-nodes-timelinesai#readme",
   "keywords": [
     "n8n-community-node-package",
     "n8n",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/timelinesai/n8n-nodes-timelinesai.git"
+    "url": "https://github.com/InitechSoftware/n8n-nodes-timelinesai.git"
   },
   "scripts": {
     "build": "n8n-node build",
