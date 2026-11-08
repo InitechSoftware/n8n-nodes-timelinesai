@@ -17,6 +17,7 @@ import { whatsappAccountDescription } from './resources/whatsappAccount';
 import { workspaceDescription } from './resources/workspace';
 import { getChats } from './listSearch/getChats';
 import { getWhatsAppAccounts } from './listSearch/getWhatsAppAccounts';
+import { withApiErrorHandling } from './shared/errors';
 
 export class TimelinesAi implements INodeType {
 	description: INodeTypeDescription = {
@@ -45,8 +46,10 @@ export class TimelinesAi implements INodeType {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
+			// Error responses reach throwOnApiError (see shared/errors.ts), which reports them readably.
+			ignoreHttpStatusErrors: true,
 		},
-		properties: [
+		properties: withApiErrorHandling([
 			{
 				displayName: 'Resource',
 				name: 'resource',
@@ -126,7 +129,7 @@ export class TimelinesAi implements INodeType {
 			...wabaTemplateDescription,
 			...whatsappAccountDescription,
 			...workspaceDescription,
-		],
+		]),
 	};
 
 	methods = {
