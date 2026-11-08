@@ -5,6 +5,14 @@ import { chatNoteDescription } from './resources/chatNote';
 import { fileDescription } from './resources/file';
 import { messageDescription } from './resources/message';
 import { messageReactionDescription } from './resources/messageReaction';
+import { wabaChatDescription, wabaChatLabelDescription } from './resources/waba/chats';
+import {
+	wabaAccountDescription,
+	wabaMessageDescription,
+	wabaMessageReactionDescription,
+	wabaTemplateDescription,
+} from './resources/waba/messages';
+import { getWabaAccounts, getWabaChats, getWabaTemplates } from './listSearch/waba';
 import { whatsappAccountDescription } from './resources/whatsappAccount';
 import { workspaceDescription } from './resources/workspace';
 import { getChats } from './listSearch/getChats';
@@ -70,6 +78,30 @@ export class TimelinesAi implements INodeType {
 						value: 'messageReaction',
 					},
 					{
+						name: 'WABA Account',
+						value: 'wabaAccount',
+					},
+					{
+						name: 'WABA Chat',
+						value: 'wabaChat',
+					},
+					{
+						name: 'WABA Chat Label',
+						value: 'wabaChatLabel',
+					},
+					{
+						name: 'WABA Message',
+						value: 'wabaMessage',
+					},
+					{
+						name: 'WABA Message Reaction',
+						value: 'wabaMessageReaction',
+					},
+					{
+						name: 'WABA Template',
+						value: 'wabaTemplate',
+					},
+					{
 						name: 'WhatsApp Account',
 						value: 'whatsappAccount',
 					},
@@ -86,6 +118,12 @@ export class TimelinesAi implements INodeType {
 			...fileDescription,
 			...messageDescription,
 			...messageReactionDescription,
+			...wabaAccountDescription,
+			...wabaChatDescription,
+			...wabaChatLabelDescription,
+			...wabaMessageDescription,
+			...wabaMessageReactionDescription,
+			...wabaTemplateDescription,
 			...whatsappAccountDescription,
 			...workspaceDescription,
 		],
@@ -94,6 +132,9 @@ export class TimelinesAi implements INodeType {
 	methods = {
 		listSearch: {
 			getChats,
+			getWabaAccounts,
+			getWabaChats,
+			getWabaTemplates,
 			getWhatsAppAccounts,
 		},
 	};
